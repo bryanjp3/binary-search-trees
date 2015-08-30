@@ -16,8 +16,8 @@ public:
 			 left(nullptr),
 			 right(nullptr)  {}
    
-  std::unique_ptr< Node<K, V> > left;
-  std::unique_ptr< Node<K, V> > right;
+  std::shared_ptr< Node<K, V> > left;
+  std::shared_ptr< Node<K, V> > right;
   
   K getKey() {return key;};
   
@@ -41,7 +41,7 @@ template <typename K, typename V>
 class Map
 {
 private:
-  std::unique_ptr< Node<K,V> > root;
+  std::shared_ptr< Node<K,V> > root;
 
 public:
 
@@ -49,19 +49,19 @@ public:
 
   void insert(const K &key_, const V &value_);
   
-  bool _insert(std::unique_ptr< Node<K,V> > &node,
-	       std::unique_ptr< Node<K,V> > &parent);
+  bool _insert(std::shared_ptr< Node<K,V> > &node,
+	       std::shared_ptr< Node<K,V> > &parent);
 
   bool deleteNode(const K &key);
 
-  std::unique_ptr< Node<K,V> > search(const K &key);
+  std::weak_ptr< Node<K,V> > search(const K &key);
   //coment
 };
 
 template <typename K, typename V>
 void Map<K, V>::insert(const K &key_, const V &value_)
   {
-    std::unique_ptr< Node<K,V> > p(new Node<K,V>(key_, value_));
+    std::shared_ptr< Node<K,V> > p(new Node<K,V>(key_, value_));
       
     if(!root)  
     {
@@ -74,8 +74,8 @@ void Map<K, V>::insert(const K &key_, const V &value_)
   }
 
 template <typename K, typename V>
-bool Map<K, V>::_insert(std::unique_ptr< Node<K,V> > &node,
-			std::unique_ptr< Node<K,V> > &parent)
+bool Map<K, V>::_insert(std::shared_ptr< Node<K,V> > &node,
+			std::shared_ptr< Node<K,V> > &parent)
 {
   std::cout << "here " << *node << " " << *parent << std::endl;
   K currentKey = node->getKey();
@@ -117,8 +117,8 @@ bool deleteNode(const K &key)
 }
 
 template <typename K, typename V>
-std::unique_ptr< Node<K,V> > search(const K &key)
+std::weak_ptr< Node<K,V> > search(const K &key)
 {
-  std::unique_ptr< Node<K,V> >  p(new Node<K,V>());
+  std::weak_ptr< Node<K,V> >  p(new Node<K,V>());
   return p;
 }
