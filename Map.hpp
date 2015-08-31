@@ -7,8 +7,8 @@ template <typename K, typename V>
 class Node
 {
 private:
-  K key;
-  V value;  
+  const K key;
+  const V value;  
   
 public:
   Node(K key, V value) : key(key),
@@ -23,9 +23,9 @@ public:
   
   V getValue() {return value;};
 
-  void setValue(const V& val) {value = val;};
+  //void setValue(const V& val) {value = val;};
 
-  void setKey(const K& k) {key = k;};
+  //void setKey(const K& k) {key = k;};
 
   bool isLeaf() { if(!left && !right) return true; else return false;};
 
@@ -120,5 +120,7 @@ template <typename K, typename V>
 std::weak_ptr< Node<K,V> > search(const K &key)
 {
   std::weak_ptr< Node<K,V> >  p(new Node<K,V>());
+  const std::weak_ptr< Node<K,V> >  p2(new Node<K,V>());
+  p2->setKey(1);
   return p;
 }
