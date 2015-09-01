@@ -54,8 +54,11 @@ public:
 
   bool deleteNode(const K &key);
 
-  std::weak_ptr< Node<K,V> > search(const K &key);
-  //coment
+  std::shared_ptr< Node<K,V> > search(const K &key);
+
+  std::shared_ptr<Node<K,V> > _search(std::shared_ptr<Node<K,V> > node,
+				      const K &key);
+  
 };
 
 template <typename K, typename V>
@@ -117,10 +120,59 @@ bool deleteNode(const K &key)
 }
 
 template <typename K, typename V>
-std::weak_ptr< Node<K,V> > search(const K &key)
+std::shared_ptr< Node<K,V> > Map<K,V>::search(const K &key)
 {
-  std::weak_ptr< Node<K,V> >  p(new Node<K,V>());
-  const std::weak_ptr< Node<K,V> >  p2(new Node<K,V>());
-  p2->setKey(1);
+  std::shared_ptr< Node<K,V> >  p;
+
+  if(key == root->getKey())
+    {
+      p = root;
+    }
+
+  else if(key > root->getKey())
+    {
+      p = _search(root->right, key);
+    }
+  
+  else if(key < root->getKey())
+    {
+      p = _search(root->left, key);
+    }
+  
   return p;
+}
+
+template <typename K, typename V>
+std::shared_ptr< Node<K,V> > Map<K,V>::_search(std::shared_ptr<Node<K,V> > node, const K &key)
+{
+  std::cout << "searching " << *node  << std::endl;
+  std::shared_ptr<Node<K,V> > p;
+  if(key == node->getKey())
+    {
+      std::cout << "match: " << *node << std::endl;
+      return node;
+    }
+  
+  if(!node->isLeaf())
+    {
+      if(key > node->getKey())
+	{
+	  p = _search(node->right, key);
+	}
+
+      if(key < node->getKey())
+	{
+	  p = _search(node->left, key);
+	}
+    }
+
+  if(node->isLeaf() && key != node->getKey())
+    {
+      std::cout << "not in map" << std::endl;
+    }
+  
+  
+  
+  return p;
+
 }
