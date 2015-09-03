@@ -23,10 +23,6 @@ public:
   
   V getValue() {return value;};
 
-  //void setValue(const V& val) {value = val;};
-
-  //void setKey(const K& k) {key = k;};
-
   bool isLeaf() { if(!left && !right) return true; else return false;};
 
   friend std::ostream& operator<< (std::ostream& out, const Node<K, V>& n)
