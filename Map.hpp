@@ -97,11 +97,9 @@ void Map<K, V>::insert(const K &key_, const V &value_)
 template <typename K, typename V>
 bool Map<K, V>::_insert(std::shared_ptr< Node<K,V> > &node,
 			std::shared_ptr< Node<K,V> > &parent)
-{
-  std::cout << "here " << *node << " " << *parent << std::endl;
+{  
   K currentKey = node->getKey();
   K parentKey = parent->getKey();
-  using namespace std;
   
   if(currentKey > parentKey)
     {     
@@ -122,6 +120,7 @@ bool Map<K, V>::_insert(std::shared_ptr< Node<K,V> > &node,
 	}
       else _insert(node, parent->left);
      }
+
   if(currentKey == parent->getKey())
     {
       std::cout << "key already exists" << std::endl;
