@@ -21,6 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
+#ifndef MAP_H_
 #define MAP_HPP_
 #include <memory>
 #include <iostream>
@@ -210,5 +211,5 @@ std::shared_ptr< Node<K,V> > Map<K,V>::_search(std::shared_ptr<Node<K,V> > node,
   if(node->isLeaf() && key != node->getKey()) std::cout << "not in map" << std::endl;
   return p;
 }
-
+#endif
 
