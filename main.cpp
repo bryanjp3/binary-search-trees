@@ -37,17 +37,21 @@ int main()
   std::uniform_int_distribution<int> distribution(0,10000-1);
 
   int key;
-  for(int k = 0; k < 100; k++)
+  for(int i = 0; i < 100; i++)
     {
       key = distribution(generator);
       m.insert(key,j);
     }
   
-  key = 158;
+  key = 470;
   std::shared_ptr< Node<int,int> > p;
   p = std::move(m.search(key));
   
-  if(p) std::cout << "the value for the key is " << *p << std::endl;
+  if(p)
+    {
+      std::cout << "the value for the key is " << *p << std::endl;
+      std::cout << p->height() << " is the height" << std::endl;
+    }
   
   return 0;
 }

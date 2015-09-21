@@ -24,6 +24,7 @@ THE SOFTWARE.
 #define MAP_HPP_
 #include <memory>
 #include <iostream>
+#include <algorithm>
 
 template <typename K, typename V>
 class Node
@@ -47,12 +48,43 @@ public:
 
   bool isLeaf() { if(!left && !right) return true; else return false;};
 
+  int height();
+  
+  int _height(std::shared_ptr< Node<K, V> > node);
+
   friend std::ostream& operator<< (std::ostream& out, const Node<K, V>& n)
   {
     out << "{key: " << n.key << " value: " << n.value << "}";
     return out;
   }
 };
+
+template <typename K, typename V>
+int Node<K,V>::height()
+{
+  if(this->isLeaf()) return 1;
+
+  int leftHeight = _height(this->left);
+  int rightHeight = _height(this->right);
+
+  int height = std::max(leftHeight, rightHeight);
+  return height + 1;
+}
+
+template <typename K, typename V>
+int Node<K,V>::_height(std::shared_ptr <Node<K, V> > node)
+{
+  if(node->isLeaf()) return 1;
+  
+  int leftHeight = 1;
+  int rightHeight = 1;
+
+  if(node->left) leftHeight = _height(node->left);
+  if(node->right) rightHeight = _height(node->right);
+  
+  int height = std::max(leftHeight, rightHeight);
+  return height + 1;
+}
 
 
 template <typename K, typename V>
@@ -76,6 +108,8 @@ public:
 
   std::shared_ptr<Node<K,V> > _search(std::shared_ptr<Node<K,V> > node,
 				      const K &key);
+  
+  //static int height(std::shared_ptr <Node<K, V> > node);
   
 };
 
@@ -149,7 +183,8 @@ std::shared_ptr< Node<K,V> > Map<K,V>::search(const K &key)
 }
 
 template <typename K, typename V>
-std::shared_ptr< Node<K,V> > Map<K,V>::_search(std::shared_ptr<Node<K,V> > node, const K &key)
+std::shared_ptr< Node<K,V> > Map<K,V>::_search(std::shared_ptr<Node<K,V> > node,
+					       const K &key)
 {
   if(!node)
     {
@@ -175,3 +210,5 @@ std::shared_ptr< Node<K,V> > Map<K,V>::_search(std::shared_ptr<Node<K,V> > node,
   if(node->isLeaf() && key != node->getKey()) std::cout << "not in map" << std::endl;
   return p;
 }
+
+
