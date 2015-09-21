@@ -1,7 +1,7 @@
 
 CC=g++
 
-CFLAGS = -c -Wall -O4 -std=c++11 
+CFLAGS = -c -g -Wall -O4 -std=c++11 
 
 all: prog
 

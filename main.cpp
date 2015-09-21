@@ -24,7 +24,6 @@ THE SOFTWARE.
 #include<iostream>
 #include <memory>
 #include <random>
-
 #include "Map.hpp"
 
 int main()
@@ -32,25 +31,23 @@ int main()
   Map<int, int> m = Map<int, int>();
 
   //insert arbitrary values into the map
-  int j;
-  j = 3;
+  int j = 3;
   
   std::default_random_engine generator;
   std::uniform_int_distribution<int> distribution(0,10000-1);
 
-  int key = 0;
-  for(int k = 0; k <100; k++)
+  int key;
+  for(int k = 0; k < 100; k++)
     {
-      j = 15;
       key = distribution(generator);
       m.insert(key,j);
     }
-
+  
+  key = 158;
   std::shared_ptr< Node<int,int> > p;
   p = std::move(m.search(key));
-  if(p)
-    {
-      std::cout << "in main " << *p << std::endl;
-    }
+  
+  if(p) std::cout << "the value for the key is " << *p << std::endl;
+  
   return 0;
 }

@@ -49,7 +49,7 @@ public:
 
   friend std::ostream& operator<< (std::ostream& out, const Node<K, V>& n)
   {
-    out << "{k: " << n.key << " v: " << n.value << "}";
+    out << "{key: " << n.key << " value: " << n.value << "}";
     return out;
   }
 };
@@ -58,11 +58,11 @@ public:
 template <typename K, typename V>
 class Map
 {
-private:
+  
+private:  
   std::shared_ptr< Node<K,V> > root;
 
 public:
-
   Map() : root(nullptr) {}
 
   void insert(const K &key_, const V &value_);
@@ -89,9 +89,8 @@ void Map<K, V>::insert(const K &key_, const V &value_)
       std::cout << "no root" << std::endl;         
       root = std::move(p);
     }
-
+    
     else _insert(p, root);
-    std::cout << *root << " " << root->isLeaf() << std::endl;
   }
 
 template <typename K, typename V>
@@ -123,7 +122,7 @@ bool Map<K, V>::_insert(std::shared_ptr< Node<K,V> > &node,
 
   if(currentKey == parent->getKey())
     {
-      std::cout << "key already exists" << std::endl;
+      std::cout << "cannot insert. key already exists" << std::endl;
       return false;
     }
 
@@ -141,20 +140,10 @@ std::shared_ptr< Node<K,V> > Map<K,V>::search(const K &key)
 {
   std::shared_ptr< Node<K,V> >  p;
 
-  if(key == root->getKey())
-    {
-      p = root;
-    }
-
-  else if(key > root->getKey())
-    {
-      p = _search(root->right, key);
-    }
+  if(key == root->getKey()) p = root;
   
-  else if(key < root->getKey())
-    {
-      p = _search(root->left, key);
-    }
+  else if(key > root->getKey()) p = _search(root->right, key);  
+  else if(key < root->getKey()) p = _search(root->left, key);
   
   return p;
 }
@@ -162,8 +151,15 @@ std::shared_ptr< Node<K,V> > Map<K,V>::search(const K &key)
 template <typename K, typename V>
 std::shared_ptr< Node<K,V> > Map<K,V>::_search(std::shared_ptr<Node<K,V> > node, const K &key)
 {
+  if(!node)
+    {
+      std::cout << "not in tree" << std::endl;
+      return node;
+    }
+  
   std::cout << "searching " << *node  << std::endl;
   std::shared_ptr<Node<K,V> > p;
+  
   if(key == node->getKey())
     {
       std::cout << "match: " << *node << std::endl;
@@ -172,24 +168,10 @@ std::shared_ptr< Node<K,V> > Map<K,V>::_search(std::shared_ptr<Node<K,V> > node,
   
   if(!node->isLeaf())
     {
-      if(key > node->getKey())
-	{
-	  p = _search(node->right, key);
-	}
-
-      if(key < node->getKey())
-	{
-	  p = _search(node->left, key);
-	}
-    }
-
-  if(node->isLeaf() && key != node->getKey())
-    {
-      std::cout << "not in map" << std::endl;
+      if(key > node->getKey()) p = _search(node->right, key);
+      if(key < node->getKey()) p = _search(node->left, key);
     }
   
-  
-  
+  if(node->isLeaf() && key != node->getKey()) std::cout << "not in map" << std::endl;
   return p;
-
 }
