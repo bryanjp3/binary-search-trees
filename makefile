@@ -10,3 +10,6 @@ main.o: main.cpp
 
 prog: main.o
 	$(CC) -o prog main.o 
+
+clean:
+	rm -f *.o

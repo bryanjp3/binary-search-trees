@@ -53,6 +53,10 @@ public:
   
   int _height(std::shared_ptr< Node<K, V> > node);
 
+  void rotateLeft();
+
+  void rotateRight();
+
   friend std::ostream& operator<< (std::ostream& out, const Node<K, V>& n)
   {
     out << "{key: " << n.key << " value: " << n.value << "}";
@@ -87,7 +91,16 @@ int Node<K,V>::_height(std::shared_ptr <Node<K, V> > node)
   return height + 1;
 }
 
-
+template <typename K, typename V>
+void Node<K,V>::rotateLeft()
+{
+  auto p = std::make_shared< Node<K,V> >(this->right);
+  
+  this->right.release();
+  this->right = std::make_shared< Node<K,V> >(p->left);
+  this->left = std::make_shared< Node<K,V> >(p);
+}
+/**************************************************************/
 template <typename K, typename V>
 class Map
 {
@@ -109,8 +122,6 @@ public:
 
   std::shared_ptr<Node<K,V> > _search(std::shared_ptr<Node<K,V> > node,
 				      const K &key);
-  
-  //static int height(std::shared_ptr <Node<K, V> > node);
   
 };
 
