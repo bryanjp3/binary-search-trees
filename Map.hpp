@@ -38,8 +38,9 @@ public:
   Node(K key, V value) : key(key),
 			 value(value),
 			 left(nullptr),
-			 right(nullptr)  {}
-   
+			 right(nullptr) {}
+  
+  std::weak_ptr< Node<K, V> > parent;
   std::shared_ptr< Node<K, V> > left;
   std::shared_ptr< Node<K, V> > right;
   
@@ -150,6 +151,7 @@ bool Map<K, V>::_insert(std::shared_ptr< Node<K,V> > &node,
     {     
       if(!parent->right)
 	{
+	  node->parent = parent;
 	  parent->right = std::move(node);
 	  return true;
 	}
@@ -159,7 +161,8 @@ bool Map<K, V>::_insert(std::shared_ptr< Node<K,V> > &node,
   if(currentKey < parentKey)
     {      
       if(!parent->left)
-	{	 
+	{
+	  node->parent = parent;
 	  parent->left = std::move(node);
 	  return true;
 	}

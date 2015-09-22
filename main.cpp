@@ -51,6 +51,8 @@ int main()
     {
       std::cout << "the value for the key is " << *p << std::endl;
       std::cout << p->height() << " is the height" << std::endl;
+      auto temp = p->parent.lock();
+      std::cout << *temp << std::endl;
     }
   
   return 0;
