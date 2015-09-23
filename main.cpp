@@ -71,8 +71,8 @@ int main()
 
       std::cout << "\n with rotation \n";
       Node<int, int>::rotateRight(p);
-      
-      key = 5;
+      Node<int, int>::rotateLeft(p);
+      key = 7;
       p = std::move(m.search(key));
       std::cout << "the value for the key is " << *p << std::endl;
       std::cout << p->height() << " is the height" << std::endl;

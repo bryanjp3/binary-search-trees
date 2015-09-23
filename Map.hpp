@@ -54,7 +54,7 @@ public:
   
   int _height(std::shared_ptr< Node<K, V> > node);
 
-  void rotateLeft();
+  static void rotateLeft(std::shared_ptr< Node<K, V> > &node);
 
   static void rotateRight(std::shared_ptr< Node<K, V> > &node);
 
@@ -93,9 +93,24 @@ int Node<K,V>::_height(std::shared_ptr <Node<K, V> > node)
 }
 
 template <typename K, typename V>
-void Node<K,V>::rotateLeft()
+void Node<K,V>::rotateLeft(std::shared_ptr< Node<K, V> > &node)
 {
- 
+  K tempKey = node->getKey();
+  auto temp = node->parent.lock();
+  auto pivot = node->right;
+
+  node->right = pivot->left;
+  pivot->left = node;
+  node = pivot;
+
+  //fix parent pointers
+  node->left->parent = node;
+  node->left->right->parent = node->left;
+  node->parent = temp;
+
+  //fix child pointers of node parent
+  if(temp->right->getKey() == tempKey) temp->right = node;
+  else  temp->left = node;
 }
 
 template <typename K, typename V>
@@ -108,12 +123,6 @@ void Node<K,V>::rotateRight(std::shared_ptr< Node<K, V> > &node)
   node->left = pivot->right;
   pivot->right = node;
   node = pivot;
-  
-  /*
-  std::cout << *node << " node" << std:: endl;
-  std::cout << *node->right << " r" << std:: endl;
-  std::cout << *node->left << " l" << std:: endl;
-  std::cout << *node->right->right << " piv" << std:: endl;*/
   
   //fix parent pointers
   node->right->parent = node;
