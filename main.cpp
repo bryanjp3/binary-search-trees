@@ -31,19 +31,34 @@ int main()
   Map<int, int> m = Map<int, int>();
 
   //insert arbitrary values into the map
-  int j = 3;
+  int j = 55;
   
   std::default_random_engine generator;
   std::uniform_int_distribution<int> distribution(0,10000-1);
 
-  int key;
+  int key;/*
   for(int i = 0; i < 100; i++)
     {
       key = distribution(generator);
       m.insert(key,j);
     }
+   */
+
+  key = 0;
+  m.insert(key, j);
+
+  key = 5;
+  m.insert(key, j);
+  key = 7;
+  m.insert(key, j);
+  key = 3;
+  m.insert(key, j);
+  key = 4;
+  m.insert(key, j);
+  key = 2;
+  m.insert(key, j);
   
-  key = 470;
+  key = 5;
   std::shared_ptr< Node<int,int> > p;
   p = std::move(m.search(key));
   
@@ -53,6 +68,16 @@ int main()
       std::cout << p->height() << " is the height" << std::endl;
       auto temp = p->parent.lock();
       std::cout << *temp << std::endl;
+
+      std::cout << "\n with rotation \n";
+      Node<int, int>::rotateRight(p);
+      
+      key = 5;
+      p = std::move(m.search(key));
+      std::cout << "the value for the key is " << *p << std::endl;
+      std::cout << p->height() << " is the height" << std::endl;
+      auto temp2 = p->parent.lock();
+      std::cout << " parent node: " << *temp2 << std::endl;
     }
   
   return 0;

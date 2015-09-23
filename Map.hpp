@@ -39,7 +39,7 @@ public:
 			 value(value),
 			 left(nullptr),
 			 right(nullptr) {}
-  
+  Node(std::shared_ptr<Node<K, V> > &node) : key(0), value(0) {}
   std::weak_ptr< Node<K, V> > parent;
   std::shared_ptr< Node<K, V> > left;
   std::shared_ptr< Node<K, V> > right;
@@ -56,7 +56,7 @@ public:
 
   void rotateLeft();
 
-  void rotateRight();
+  static void rotateRight(std::shared_ptr< Node<K, V> > &node);
 
   friend std::ostream& operator<< (std::ostream& out, const Node<K, V>& n)
   {
@@ -95,11 +95,36 @@ int Node<K,V>::_height(std::shared_ptr <Node<K, V> > node)
 template <typename K, typename V>
 void Node<K,V>::rotateLeft()
 {
-  auto p = std::make_shared< Node<K,V> >(this->right);
+ 
+}
+
+template <typename K, typename V>
+void Node<K,V>::rotateRight(std::shared_ptr< Node<K, V> > &node)
+{
+  K tempKey = node->getKey();
+  auto temp = node->parent.lock();
+  auto pivot = node->left;
   
-  this->right.release();
-  this->right = std::make_shared< Node<K,V> >(p->left);
-  this->left = std::make_shared< Node<K,V> >(p);
+  node->left = pivot->right;
+  pivot->right = node;
+  node = pivot;
+  
+  /*
+  std::cout << *node << " node" << std:: endl;
+  std::cout << *node->right << " r" << std:: endl;
+  std::cout << *node->left << " l" << std:: endl;
+  std::cout << *node->right->right << " piv" << std:: endl;*/
+  
+  //fix parent pointers
+  node->right->parent = node;
+  node->right->left->parent = node->right;
+  node->parent = temp;
+
+  //fix child pointers of node parent
+  //if else statement determines which child needs to be fixed  
+  if(temp->right->getKey() == tempKey) temp->right = node;
+  else  temp->left = node;
+  
 }
 /**************************************************************/
 template <typename K, typename V>
