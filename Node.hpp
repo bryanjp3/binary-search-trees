@@ -42,7 +42,9 @@ public:
 			 value(value),
 			 left(nullptr),
 			 right(nullptr) {}
+  
   Node(std::shared_ptr<Node<K, V> > &node) : key(0), value(0) {}
+  
   std::weak_ptr< Node<K, V> > parent;
   std::shared_ptr< Node<K, V> > left;
   std::shared_ptr< Node<K, V> > right;
@@ -139,16 +141,22 @@ void Node<K,V>::rotateRight(std::shared_ptr< Node<K, V> > &node)
   
 }
 
-
-template <typename K, typename V> class RBNode : public Node<K, V>
+template <typename K, typename V>
+class RBNode : public Node<K, V>
 {
-  
-private:
-  //Node<K,V>::color nodeColor;
-
-public:
+public: 
   typedef enum{red, black} color;
 
-  //color getColor() { return nodeColor;}
+  //constructor
+  RBNode(K key, V value) : Node<K, V>(key, value) {}
+  
+  RBNode::color getColor() { return nodeColor;}
+  
+private:
+  RBNode::color nodeColor;
+  
+
 };
+
+
 #endif
