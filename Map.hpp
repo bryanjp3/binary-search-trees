@@ -31,7 +31,7 @@ template <typename K, typename V>
 class Map
 {
   
-private:  
+protected:  
   std::shared_ptr< Node<K,V> > root;
 
 public:
@@ -41,8 +41,6 @@ public:
   
   bool _insert(std::shared_ptr< Node<K,V> > &node,
 	       std::shared_ptr< Node<K,V> > &parent);
-
-  bool deleteNode(const K &key);
 
   std::shared_ptr< Node<K,V> > search(const K &key);
 
@@ -104,12 +102,6 @@ bool Map<K, V>::_insert(std::shared_ptr< Node<K,V> > &node,
 }
 
 template <typename K, typename V>
-bool deleteNode(const K &key)
-{  
-  return true;
-}
-
-template <typename K, typename V>
 std::shared_ptr< Node<K,V> > Map<K,V>::search(const K &key)
 {
   std::shared_ptr< Node<K,V> >  p;
@@ -150,5 +142,49 @@ std::shared_ptr< Node<K,V> > Map<K,V>::_search(std::shared_ptr<Node<K,V> > node,
   if(node->isLeaf() && key != node->getKey()) std::cout << "not in map" << std::endl;
   return p;
 }
+
+/*****************************************************************************/
+
+template <typename K, typename V>
+class RBMap
+{
+private:
+  std::shared_ptr< RBNode<K, V> > root;
+
+public:
+
+  RBMap() : root(nullptr) {}
+  
+  void insert(K key, V value);
+
+  std::shared_ptr< RBNode<K, V> > search(K key);
+};
+
+template <typename K, typename V>
+void RBMap<K, V>::insert(K key, V value)
+{
+  std::shared_ptr< RBNode<K, V> > p = make_shared(RBNode<K, V>(key, value));
+  
+  if (!root) root = std::move(p);
+
+  else
+    {
+      std::shared_ptr< RBNode<K, V> > x = root;
+      std::shared_ptr< RBNode<K, V> > y;
+
+      while(x)
+	{
+	  y = x;	  
+	  if( key < x->getKey()) x = x->left;
+	  else x = x->right;
+	}
+      p->parent = y;
+
+      if(p->getKey() < y->getKey()) y->left = p;
+      else y->right = p;
+      
+    }
+}
+
 #endif
 

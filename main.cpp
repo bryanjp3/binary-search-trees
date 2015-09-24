@@ -79,6 +79,8 @@ int main()
       auto temp2 = p->parent.lock();
       std::cout << " parent node: " << *temp2 << std::endl;
     }
+
+  
   
   return 0;
 }

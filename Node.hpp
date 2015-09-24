@@ -151,6 +151,8 @@ public:
   RBNode(K key, V value) : Node<K, V>(key, value) {}
   
   RBNode::color getColor() { return nodeColor;}
+
+  void setColor(RBNode::color _color);
   
 private:
   RBNode::color nodeColor;
@@ -158,5 +160,9 @@ private:
 
 };
 
-
+template <typename K, typename V>
+RBNode<K,V>::setColor(RBNode::color _color)
+{
+  nodeColor = color;
+}
 #endif
