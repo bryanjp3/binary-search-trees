@@ -22,27 +22,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-#ifndef NODE_H_
+#ifndef NODE_HPP_
 #define NODE_HPP_
 
 #include <memory>
 #include <iostream>
 #include <algorithm>
-  
-//  Node::color getColor() { return nodeColor;}
+
 
 template <typename K, typename V>
 class Node
-{
-  typedef enum{red, black, none} color;
+{  
+ typedef enum{red, black, none} color;
   
- private:
+private:
   const K key;
   const V value;
   Node::color nodeColor;
   
-public:
-  
+public: 
   
   Node(K key, V value) : key(key),
 			 value(value),
@@ -76,6 +74,8 @@ public:
   void makeBlack();
   
   void makeRed();
+
+  Node::color getColor() { return nodeColor;}
 
   friend std::ostream& operator<< (std::ostream& out,
 					   const Node<K, V>& n)
