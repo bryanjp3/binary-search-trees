@@ -38,25 +38,25 @@ class Node
 private:
   const K key;
   const V value;
-  Node::color nodeColor;
   
-public: 
+  
+public:  
+  std::weak_ptr< Node<K, V> > parent;
+  std::shared_ptr< Node<K, V> > left;
+  std::shared_ptr< Node<K, V> > right;
+  Node::color nodeColor;
   
   Node(K key, V value) : key(key),
 			 value(value),
 			 left(nullptr),
-			 nodeColor(Node::color::none),
-			 right(nullptr)
+			 right(nullptr),
+			 nodeColor(Node::color::none)
   {
     
   }
   
   Node(std::shared_ptr<Node<K, V> > &node) : key(0), value(0) {}
-  
-  std::weak_ptr< Node<K, V> > parent;
-  std::shared_ptr< Node<K, V> > left;
-  std::shared_ptr< Node<K, V> > right;
-  
+    
   K getKey() {return key;};
   
   V getValue() {return value;};
