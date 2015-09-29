@@ -149,23 +149,23 @@ template <typename K, typename V>
 class RBMap
 {
 private:
-  std::shared_ptr< RBNode<K, V> > root;
+  std::shared_ptr< Node<K, V> > root;
 
 public:
 
   RBMap() : root(nullptr) {}
   
-  void insert(K key, V value);
+  void insert(K _key, V _value);
 
-  std::shared_ptr< RBNode<K, V> > search(K key);
+  std::shared_ptr< Node<K, V> > search(K key);
 };
 
 template <typename K, typename V>
-void RBMap<K, V>::insert(K key, V value)
+void RBMap<K, V>::insert(K _key, V _value)
 {
-  std::shared_ptr< RBNode<K, V> > p = make_shared(RBNode<K, V>(key, value));
+  //std::shared_ptr< Node<K, V> > p(new Node<K, V>(_key, _value));
   
-  if (!root) root = std::move(p);
+  /*if (!root) root = std::move(p);
 
   else
     {
@@ -175,7 +175,7 @@ void RBMap<K, V>::insert(K key, V value)
       while(x)
 	{
 	  y = x;	  
-	  if( key < x->getKey()) x = x->left;
+	  if( _key < x->getKey()) x = x->left;
 	  else x = x->right;
 	}
       p->parent = y;
@@ -183,7 +183,7 @@ void RBMap<K, V>::insert(K key, V value)
       if(p->getKey() < y->getKey()) y->left = p;
       else y->right = p;
       
-    }
+      }*/
 }
 
 #endif

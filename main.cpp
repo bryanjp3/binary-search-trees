@@ -28,7 +28,7 @@ THE SOFTWARE.
 
 int main()
 {
-  Map<int, int> m = Map<int, int>();
+  RBMap<int, int> m = RBMap<int, int>();
 
   //insert arbitrary values into the map
   int j = 55;
@@ -36,7 +36,8 @@ int main()
   std::default_random_engine generator;
   std::uniform_int_distribution<int> distribution(0,10000-1);
 
-  int key;/*
+  int key;
+  /*
   for(int i = 0; i < 100; i++)
     {
       key = distribution(generator);
@@ -59,9 +60,9 @@ int main()
   m.insert(key, j);
   
   key = 5;
-  std::shared_ptr< Node<int,int> > p;
-  p = std::move(m.search(key));
-  
+  //std::shared_ptr< Node<int,int> > p;
+  //p = std::move(m.search(key));
+  /*
   if(p)
     {
       std::cout << "the value for the key is " << *p << std::endl;
@@ -78,7 +79,7 @@ int main()
       std::cout << p->height() << " is the height" << std::endl;
       auto temp2 = p->parent.lock();
       std::cout << " parent node: " << *temp2 << std::endl;
-    }
+    }*/
 
   
   

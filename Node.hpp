@@ -28,20 +28,30 @@ THE SOFTWARE.
 #include <memory>
 #include <iostream>
 #include <algorithm>
-
+  
+//  Node::color getColor() { return nodeColor;}
 
 template <typename K, typename V>
 class Node
 {
-protected:
+  typedef enum{red, black, none} color;
+  
+ private:
   const K key;
-  const V value;  
+  const V value;
+  Node::color nodeColor;
   
 public:
+  
+  
   Node(K key, V value) : key(key),
 			 value(value),
 			 left(nullptr),
-			 right(nullptr) {}
+			 nodeColor(Node::color::none),
+			 right(nullptr)
+  {
+    
+  }
   
   Node(std::shared_ptr<Node<K, V> > &node) : key(0), value(0) {}
   
@@ -63,12 +73,17 @@ public:
 
   static void rotateRight(std::shared_ptr< Node<K, V> > &node);
 
+  void makeBlack();
+  
+  void makeRed();
+
   friend std::ostream& operator<< (std::ostream& out,
 					   const Node<K, V>& n)
   {
     out << "{key: " << n.key << " value: " << n.value << "}";
     return out;
   }
+   
 };
 
 template <typename K, typename V>
@@ -142,27 +157,15 @@ void Node<K,V>::rotateRight(std::shared_ptr< Node<K, V> > &node)
 }
 
 template <typename K, typename V>
-class RBNode : public Node<K, V>
+void Node<K,V>::makeBlack()
 {
-public: 
-  typedef enum{red, black} color;
-
-  //constructor
-  RBNode(K key, V value) : Node<K, V>(key, value) {}
-  
-  RBNode::color getColor() { return nodeColor;}
-
-  void setColor(RBNode::color _color);
-  
-private:
-  RBNode::color nodeColor;
-  
-
-};
+  nodeColor = black;
+}
 
 template <typename K, typename V>
-RBNode<K,V>::setColor(RBNode::color _color)
+void Node<K,V>::makeRed()
 {
-  nodeColor = color;
+  nodeColor = red;
 }
+
 #endif
