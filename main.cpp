@@ -47,7 +47,6 @@ int main()
 
   key = 0;
   m.insert(key, j);
-
   key = 5;
   m.insert(key, j);
   key = 7;
@@ -59,9 +58,9 @@ int main()
   key = 2;
   m.insert(key, j);
   
-  key = 5;
-  //std::shared_ptr< Node<int,int> > p;
-  //p = std::move(m.search(key));
+  key = 4;
+  std::shared_ptr< Node<int,int> > p;
+  p = std::move(m.search(key));
   /*
   if(p)
     {
@@ -79,8 +78,8 @@ int main()
       std::cout << p->height() << " is the height" << std::endl;
       auto temp2 = p->parent.lock();
       std::cout << " parent node: " << *temp2 << std::endl;
-    }*/
-
+    }
+*/
   
   
   return 0;

@@ -26,6 +26,11 @@ THE SOFTWARE.
 #define MAP_HPP_
 
 #include "Node.hpp"
+template <typename K, typename V>
+class Map;
+
+template <typename K, typename V>
+class RBMap;
 
 template <typename K, typename V>
 class Map
@@ -33,7 +38,8 @@ class Map
   
 protected:  
   std::shared_ptr< Node<K,V> > root;
-
+  friend class RBMap<K, V>;
+  
 public:
   Map() : root(nullptr) {}
 
@@ -105,6 +111,7 @@ template <typename K, typename V>
 std::shared_ptr< Node<K,V> > Map<K,V>::search(const K &key)
 {
   std::shared_ptr< Node<K,V> >  p;
+  if(!root) std::cout << "fuccck" << std::endl;
 
   if(key == root->getKey()) p = root;
   
@@ -146,34 +153,41 @@ std::shared_ptr< Node<K,V> > Map<K,V>::_search(std::shared_ptr<Node<K,V> > node,
 /*****************************************************************************/
 
 template <typename K, typename V>
-class RBMap
+class RBMap : public Map<K, V>
 {
 private:
-  std::shared_ptr< Node<K, V> > root;
+  //std::shared_ptr< Node<K, V> > root;
 
 public:
 
-  RBMap() : root(nullptr) {}
+  RBMap() : Map<K, V>() {}
   
   void insert(K _key, V _value);
 
-  std::shared_ptr< Node<K, V> > search(K key);
+  //std::shared_ptr< Node<K, V> > search(K key);
+  
 };
 
 template <typename K, typename V>
 void RBMap<K, V>::insert(K _key, V _value)
 {
-  //std::shared_ptr< Node<K, V> > p(new Node<K, V>(_key, _value));
+  std::shared_ptr< Node<K, V> > p(new Node<K, V>(_key, _value));
   
-  /*if (!root) root = std::move(p);
-
+  if (!Map<K, V>::root)
+    {
+      std::cout << "rroot" << std::endl;
+      Map<K, V>::root = p;
+      std::cout << *Map<K, V>::root << std::endl;
+    }
+    
   else
     {
-      std::shared_ptr< RBNode<K, V> > x = root;
-      std::shared_ptr< RBNode<K, V> > y;
+      std::shared_ptr< Node<K, V> > x = Map<K, V>::root;
+      std::shared_ptr< Node<K, V> > y;
 
       while(x)
 	{
+	  std::cout << *x << " " << *p << std::endl;
 	  y = x;	  
 	  if( _key < x->getKey()) x = x->left;
 	  else x = x->right;
@@ -183,7 +197,7 @@ void RBMap<K, V>::insert(K _key, V _value)
       if(p->getKey() < y->getKey()) y->left = p;
       else y->right = p;
       
-      }*/
+      }
 }
 
 #endif
