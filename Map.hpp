@@ -26,9 +26,9 @@ THE SOFTWARE.
 #define MAP_HPP_
 
 #include "Node.hpp"
+
 template <typename K, typename V>
 class Map;
-
 template <typename K, typename V>
 class RBMap;
 
@@ -38,7 +38,6 @@ class Map
   
 protected:  
   std::shared_ptr< Node<K,V> > root;
-  friend class RBMap<K, V>;
   
 public:
   Map() : root(nullptr) {}
@@ -111,8 +110,6 @@ template <typename K, typename V>
 std::shared_ptr< Node<K,V> > Map<K,V>::search(const K &key)
 {
   std::shared_ptr< Node<K,V> >  p;
-  if(!root) std::cout << "fuccck" << std::endl;
-
   if(key == root->getKey()) p = root;
   
   else if(key > root->getKey()) p = _search(root->right, key);  
@@ -155,17 +152,13 @@ std::shared_ptr< Node<K,V> > Map<K,V>::_search(std::shared_ptr<Node<K,V> > node,
 template <typename K, typename V>
 class RBMap : public Map<K, V>
 {
-private:
-  //std::shared_ptr< Node<K, V> > root;
+private:  
 
 public:
 
   RBMap() : Map<K, V>() {}
   
-  void insert(K _key, V _value);
-
-  //std::shared_ptr< Node<K, V> > search(K key);
-  
+  void insert(K _key, V _value);  
 };
 
 template <typename K, typename V>
@@ -175,7 +168,7 @@ void RBMap<K, V>::insert(K _key, V _value)
   
   if (!Map<K, V>::root)
     {
-      std::cout << "rroot" << std::endl;
+      std::cout << "creating root node" << std::endl;
       Map<K, V>::root = p;
       std::cout << *Map<K, V>::root << std::endl;
     }
@@ -195,8 +188,7 @@ void RBMap<K, V>::insert(K _key, V _value)
       p->parent = y;
 
       if(p->getKey() < y->getKey()) y->left = p;
-      else y->right = p;
-      
+      else y->right = p;      
       }
 }
 
