@@ -152,13 +152,16 @@ std::shared_ptr< Node<K,V> > Map<K,V>::_search(std::shared_ptr<Node<K,V> > node,
 template <typename K, typename V>
 class RBMap : public Map<K, V>
 {
-private:  
+private:
+  
 
 public:
 
   RBMap() : Map<K, V>() {}
   
-  void insert(K _key, V _value);  
+  void insert(K _key, V _value);
+
+  void RBFixup(std::shared_ptr< Node<K, V> > &node);
 };
 
 template <typename K, typename V>
@@ -169,6 +172,7 @@ void RBMap<K, V>::insert(K _key, V _value)
   if (!Map<K, V>::root)
     {
       std::cout << "creating root node" << std::endl;
+      p->makeBlack();
       Map<K, V>::root = p;
       std::cout << *Map<K, V>::root << std::endl;
     }
@@ -186,10 +190,55 @@ void RBMap<K, V>::insert(K _key, V _value)
 	  else x = x->right;
 	}
       p->parent = y;
+      p->makeRed();
 
       if(p->getKey() < y->getKey()) y->left = p;
-      else y->right = p;      
+      else y->right = p;
+
+      //RBMap<K, V>::RBFixup(p);
       }
+}
+
+template <typename K, typename V>
+void RBMap<K, V>::RBFixup(std::shared_ptr< Node<K, V> > &node)
+{
+  auto z = node;
+  auto parent = node->parent.lock();
+  
+  // dont need to do anything if parent is root
+  if(parent->getKey() == Map<K,V>::root->getKey())
+    {
+      std::cout << "roooot" << std::endl;
+      return;
+    }
+
+  std::cout << "here " << *node << std::endl;
+
+
+  //else uncle = grandfather->left;
+
+  while(z->isRed())
+    {
+      auto parent = z->parent.lock();
+      auto grandparent = parent->parent.lock();
+      
+      if(parent->isLeft())
+	{
+	  auto y = grandparent->right;
+
+	  if(y->isRed())
+	    {
+	      parent->makeBlack();
+	      y->makeBlack();
+	      grandparent->makeRed();
+	      z = grandparent;
+	    }
+	}
+
+      //else if(parent->
+      Map<K, V>::root->makeBlack();
+    }// while
+   
 }
 
 #endif

@@ -45,42 +45,28 @@ int main()
     }
    */
 
-  key = 0;
-  m.insert(key, j);
+  key = 1;
+  m.insert(key, key);
   key = 5;
-  m.insert(key, j);
-  key = 7;
-  m.insert(key, j);
-  key = 3;
-  m.insert(key, j);
+  m.insert(key, key);
+  key = 0;
+  m.insert(key, key);
+  key = -1;
+  m.insert(key, key);/*
   key = 4;
   m.insert(key, j);
   key = 2;
   m.insert(key, j);
-  
-  key = 4;
+		   */
+  key = 0;
   std::shared_ptr< Node<int,int> > p;
   p = std::move(m.search(key));
-  /*
+  
   if(p)
     {
       std::cout << "the value for the key is " << *p << std::endl;
       std::cout << p->height() << " is the height" << std::endl;
-      auto temp = p->parent.lock();
-      std::cout << *temp << std::endl;
-
-      std::cout << "\n with rotation \n";
-      Node<int, int>::rotateRight(p);
-      Node<int, int>::rotateLeft(p);
-      key = 7;
-      p = std::move(m.search(key));
-      std::cout << "the value for the key is " << *p << std::endl;
-      std::cout << p->height() << " is the height" << std::endl;
-      auto temp2 = p->parent.lock();
-      std::cout << " parent node: " << *temp2 << std::endl;
-    }
-*/
-  
+    }  
   
   return 0;
 }

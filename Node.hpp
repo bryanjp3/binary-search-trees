@@ -75,12 +75,19 @@ public:
   
   void makeRed();
 
+  bool isRed();
+
+  bool isLeft();
+
   Node::color getColor() { return nodeColor;}
 
   friend std::ostream& operator<< (std::ostream& out,
 					   const Node<K, V>& n)
   {
-    out << "{key: " << n.key << " value: " << n.value << "}";
+    //if n.nodeColor == 
+    out << "{key: " << n.key
+	<< " value: " << n.value
+	<< " color: " << n.nodeColor << "}";
     return out;
   }
    
@@ -90,9 +97,12 @@ template <typename K, typename V>
 int Node<K,V>::height()
 {
   if(this->isLeaf()) return 1;
-
-  int leftHeight = _height(this->left);
-  int rightHeight = _height(this->right);
+  
+  int leftHeight = 1;
+  int rightHeight = 1;
+  
+  if(this->left)  leftHeight  = _height(this->left);  
+  if(this->right) rightHeight = _height(this->right);
 
   int height = std::max(leftHeight, rightHeight);
   return height + 1;
@@ -100,12 +110,12 @@ int Node<K,V>::height()
 
 template <typename K, typename V>
 int Node<K,V>::_height(std::shared_ptr <Node<K, V> > node)
-{
+{  
   if(node->isLeaf()) return 1;
   
   int leftHeight = 1;
   int rightHeight = 1;
-
+  
   if(node->left) leftHeight = _height(node->left);
   if(node->right) rightHeight = _height(node->right);
   
@@ -133,6 +143,7 @@ void Node<K,V>::rotateLeft(std::shared_ptr< Node<K, V> > &node)
   if(temp->right->getKey() == tempKey) temp->right = node;
   else  temp->left = node;
 }
+
 template <typename K, typename V>
 void Node<K,V>::rotateRight(std::shared_ptr< Node<K, V> > &node)
 {
@@ -166,6 +177,26 @@ template <typename K, typename V>
 void Node<K,V>::makeRed()
 {
   nodeColor = red;
+}
+
+template< typename K, typename V>
+bool Node<K, V>::isRed()
+{
+  if(nodeColor == Node<K,V>::color::red) return true;
+
+  else return false;
+}
+
+template <typename K, typename V>
+bool Node<K, V>::isLeft()
+{
+  auto p = parent.lock();
+  
+  if(!p->left) return false; // case when left node of parent is null
+		 
+  if(p->left->getKey() ==  key) return true;
+  
+  else return false;
 }
 
 #endif
